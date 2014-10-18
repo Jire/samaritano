@@ -45,6 +45,7 @@ final class SubscriberRegistry {
 			if (!method.isAnnotationPresent(Subscribe.class))
 				continue;
 			Affirm.truth(method.getParameterCount() == 1);
+			Affirm.truth(method.isAccessible());
 			Class<?> event = method.getParameterTypes()[0];
 			Affirm.truth(Event.class.isAssignableFrom(event));
 			methods.add(method);

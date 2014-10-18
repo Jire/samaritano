@@ -5,9 +5,8 @@ public final class Affirm {
 	private static final Affirmative<Object> NOT_NULL = new NotNullAffirmative<>();
 	private static final Affirmative<Boolean> TRUTH = new TruthAffirmative();
 
-	private static <T> void affirm(Affirmative<T> affirmative, T reference,
-			Object... parameters) {
-		if (!affirmative.affirm(reference, parameters))
+	private static <T> void affirm(Affirmative<T> affirmative, T reference) {
+		if (!affirmative.affirm(reference))
 			throw new IllegalStateException();
 	}
 
