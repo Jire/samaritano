@@ -21,16 +21,17 @@ abstract class AbstractMultimap<K, V> implements Multimap<K, V> {
 
 	@Override
 	public final void put(K key, V value) {
-		Collection<V> collection = map.get(key);
-		if (collection == null)
-			collection = generateCollection();
+		Collection<V> collection = get(key);
 		collection.add(value);
 		map.put(key, collection);
 	}
 
 	@Override
 	public final Collection<V> get(K key) {
-		return map.get(key);
+		Collection<V> collection = map.get(key);
+		if (collection == null)
+			collection = generateCollection();
+		return collection;
 	}
 
 	@Override
