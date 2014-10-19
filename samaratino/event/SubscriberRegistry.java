@@ -27,6 +27,7 @@ final class SubscriberRegistry {
 
 	void register(EventListener listener) {
 		for (Method method : findSubscriptionMethods(listener)) {
+			method.setAccessible(true);
 			Class<?>[] parameters = method.getParameterTypes();
 			@SuppressWarnings("unchecked")
 			Class<? extends Event> event = (Class<? extends Event>) parameters[0];
@@ -45,7 +46,6 @@ final class SubscriberRegistry {
 			if (!method.isAnnotationPresent(Subscribe.class))
 				continue;
 			Affirm.truth(method.getParameterCount() == 1);
-			Affirm.truth(method.isAccessible());
 			Class<?> event = method.getParameterTypes()[0];
 			Affirm.truth(Event.class.isAssignableFrom(event));
 			methods.add(method);
