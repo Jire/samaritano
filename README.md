@@ -1,4 +1,4 @@
 samaritano
 ==========
 
-Production-ready _samaritan_ release
+Production-ready _[samaritan](https://github.com/Jire/samaritan)_ release
