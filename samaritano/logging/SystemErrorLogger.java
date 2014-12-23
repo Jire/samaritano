@@ -2,7 +2,7 @@ package samaritano.logging;
 
 final class SystemErrorLogger extends AbstractLogger {
 
-	SystemErrorLogger() {
+	public SystemErrorLogger() {
 		super(Level.ALL);
 	}
 

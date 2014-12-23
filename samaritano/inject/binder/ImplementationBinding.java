@@ -25,6 +25,7 @@ final class ImplementationBinding<T> extends AbstractBinding<T> {
 	@Override
 	public T instanceOf(Key<T> type, Injector injector) throws Exception {
 		Constructor<T> constructor = findConstructor(implementation.type());
+		constructor.setAccessible(true);
 		Class<?>[] types = constructor.getParameterTypes();
 		Annotation[][] annotations = constructor.getParameterAnnotations();
 		Object[] parameters = new Object[types.length];
@@ -44,7 +45,7 @@ final class ImplementationBinding<T> extends AbstractBinding<T> {
 	private Constructor<T> findConstructor(Class<? extends T> implementation)
 			throws NoSuchMethodException, SecurityException {
 		for (Constructor<?> constructor : implementation.getConstructors())
-			if (constructor.isAnnotationPresent(Inject.class))
+			if (constructor.isAnnotationPresent(Inject.class) || constructor.getParameterCount() == 0)
 				return (Constructor<T>) constructor;
 		return (Constructor<T>) implementation.getConstructor();
 	}
