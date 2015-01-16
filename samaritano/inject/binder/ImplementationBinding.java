@@ -44,11 +44,9 @@ final class ImplementationBinding<T> extends AbstractBinding<T> {
 	@SuppressWarnings("unchecked")
 	private Constructor<T> findConstructor(Class<? extends T> implementation)
 			throws NoSuchMethodException, SecurityException {
-		for (Constructor<?> constructor : implementation.getDeclaredConstructors()) {
-			System.out.println(implementation.getSimpleName());
+		for (Constructor<?> constructor : implementation.getDeclaredConstructors())
 			if (constructor.isAnnotationPresent(Inject.class) || constructor.getParameterCount() == 0)
 				return (Constructor<T>) constructor;
-		}
 		throw new NullPointerException();
 	}
 

@@ -37,8 +37,7 @@ public final class DefaultEventManager implements EventManager {
 				if (types.length > 1 || !event.getClass().equals(types[0])) {
 					for (int i = 0; i < types.length; i++)
 						parameters[i] = scout(event, types[i]);
-				} else
-					parameters[0] = event;
+				} else parameters[0] = event;
 				subscriber.method().invoke(subscriber.listener(), parameters);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
