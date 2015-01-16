@@ -1,19 +1,20 @@
 package samaritano.inject.binder;
 
+import samaritano.inject.Binding;
 import samaritano.inject.Injector;
 import samaritano.inject.Key;
 import samaritano.inject.Scope;
 
 final class ScopedBinding<T> extends AbstractBinding<T> {
 
-	static <T> ScopedBinding<T> get(ImplementationBinding<T> binding, Scope scope) {
+	static <T> ScopedBinding<T> get(Binding<T> binding, Scope scope) {
 		return new ScopedBinding<T>(binding, scope);
 	}
 
-	private final ImplementationBinding<T> binding;
+	private final Binding<T> binding;
 	private final Scope scope;
 
-	private ScopedBinding(ImplementationBinding<T> binding, Scope scope) {
+	private ScopedBinding(Binding<T> binding, Scope scope) {
 		super(binding.key());
 		this.binding = binding;
 		this.scope = scope;

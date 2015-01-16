@@ -2,38 +2,39 @@ package samaritano.logging;
 
 abstract class AbstractLogger implements Logger {
 
+	private final Outputter outputter;
+
 	private Level level;
 
-	protected AbstractLogger(Level defaultLevel) {
-		level = defaultLevel;
+	AbstractLogger(Outputter outputter, Level defaultLevel) {
+		this.outputter = outputter;
+		this.level = defaultLevel;
 	}
-
-	protected abstract void showLog(Object message, Level level);
 
 	private final Logger log(Object message, Level level) {
 		if (level().shouldLog(level))
-			showLog(message, level);
+			outputter.showLog(message, level);
 		return this;
 	}
 
 	@Override
-	public final void info(Object message) {
-		log(message, Level.INFO);
+	public final Logger info(Object message) {
+		return log(message, Level.INFO);
 	}
 
 	@Override
-	public final void error(Object message) {
-		log(message, Level.ERROR);
+	public final Logger error(Object message) {
+		return log(message, Level.ERROR);
 	}
 
 	@Override
-	public final void warning(Object message) {
-		log(message, Level.WARNING);
+	public final Logger warn(Object message) {
+		return log(message, Level.WARNING);
 	}
 
 	@Override
-	public final void debug(Object message) {
-		log(message, Level.DEBUG);
+	public final Logger debug(Object message) {
+		return log(message, Level.DEBUG);
 	}
 
 	@Override
@@ -42,8 +43,9 @@ abstract class AbstractLogger implements Logger {
 	}
 
 	@Override
-	public final void setLevel(Level level) {
+	public final Logger setLevel(Level level) {
 		this.level = level;
+		return this;
 	}
 
 }

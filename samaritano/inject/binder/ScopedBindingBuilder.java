@@ -1,19 +1,20 @@
 package samaritano.inject.binder;
 
 import samaritano.inject.Binder;
+import samaritano.inject.Binding;
 import samaritano.inject.Scope;
 
 public final class ScopedBindingBuilder<T> extends TypedBindingBuilder<T> {
 
 	public static <T> ScopedBindingBuilder<T> get(Binder binder, Class<T> type,
-			ImplementationBinding<T> binding) {
+			Binding<T> binding) {
 		return new ScopedBindingBuilder<T>(binder, type, binding);
 	}
 
-	private final ImplementationBinding<T> binding;
+	private final Binding<T> binding;
 
 	private ScopedBindingBuilder(Binder binder, Class<T> type,
-			ImplementationBinding<T> binding) {
+			Binding<T> binding) {
 		super(binder, type);
 		this.binding = binding;
 	}

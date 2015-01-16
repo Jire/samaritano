@@ -2,16 +2,16 @@ package samaritano.logging;
 
 public interface Logger {
 
-	void info(Object message);
+	Logger info(Object message);
 
-	void error(Object message);
+	Logger error(Object message);
 
-	void warning(Object message);
+	Logger warn(Object message);
 
-	void debug(Object message);
+	Logger debug(Object message);
 
 	Level level();
 
-	void setLevel(Level level);
+	Logger setLevel(Level level);
 
 }

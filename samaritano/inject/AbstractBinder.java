@@ -4,14 +4,13 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import samaritano.inject.binder.ConstantBindingBuilder;
 import samaritano.inject.binder.LinkedBindingBuilder;
 
 abstract class AbstractBinder implements Binder {
-
+ 
 	private final Map<Key<?>, Binding<?>> bindings = new HashMap<>();
 
 	@Override
@@ -29,9 +28,9 @@ abstract class AbstractBinder implements Binder {
 	@SuppressWarnings("unchecked")
 	public final <T> Collection<Binding<T>> getBindings(Class<T> type) {
 		Set<Binding<T>> results = new HashSet<>();
-		for (Entry<Key<?>, Binding<?>> entry : bindings.entrySet())
-			if (entry.getKey().type().equals(type))
-				results.add((Binding<T>) entry.getValue());
+		bindings.entrySet().stream()
+				.filter(e -> e.getKey().type().equals(type))
+				.forEach(e -> results.add((Binding<T>) e.getValue()));
 		return results;
 	}
 

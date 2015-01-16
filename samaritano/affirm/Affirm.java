@@ -1,7 +1,7 @@
 package samaritano.affirm;
 
 public final class Affirm {
-	
+
 	private Affirm() {
 	}
 

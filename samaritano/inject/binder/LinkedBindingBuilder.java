@@ -1,7 +1,9 @@
 package samaritano.inject.binder;
 
 import samaritano.inject.Binder;
+import samaritano.inject.Binding;
 import samaritano.inject.Key;
+import samaritano.inject.Provider;
 
 public final class LinkedBindingBuilder<T> extends TypedBindingBuilder<T> {
 
@@ -14,14 +16,23 @@ public final class LinkedBindingBuilder<T> extends TypedBindingBuilder<T> {
 	}
 
 	public ScopedBindingBuilder<T> to(Class<? extends T> implementation) {
-		ImplementationBinding<T> binding = ImplementationBinding.get(
-				Key.of(type()), Key.of(implementation));
+		Binding<T> binding = ImplementationBinding.get(Key.of(type()), Key.of(implementation));
 		binder().bind(binding);
 		return ScopedBindingBuilder.get(binder(), type(), binding);
 	}
 
 	public ScopedBindingBuilder<T> toSelf() {
 		return to(type());
+	}
+	
+	public ScopedBindingBuilder<T> to(Provider<T> provider) {
+		Binding<T> binding = ProviderBinding.get(Key.of(type()), provider);
+		binder().bind(binding);
+		return ScopedBindingBuilder.get(binder(), type(), binding);
+	}
+
+	public void to(T value) {
+		binder().bind(ConstantBinding.get(Key.of(type()), value));
 	}
 
 }

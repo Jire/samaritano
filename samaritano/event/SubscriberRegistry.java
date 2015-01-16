@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import samaritano.affirm.Affirm;
 import samaritano.collect.HashMultimap;
 import samaritano.collect.Multimap;
 
@@ -18,19 +17,23 @@ final class SubscriberRegistry {
 	}
 
 	private final EventManager manager;
-	private final Multimap<Class<? extends Event>, Subscriber> subscribers = HashMultimap.create();
+	private final Multimap<Class<? extends Event>, Subscriber> subscribers = HashMultimap
+			.create();
 
 	private SubscriberRegistry(EventManager manager) {
 		this.manager = manager;
 	}
 
+	@SuppressWarnings("unchecked")
 	void register(EventListener listener) {
 		for (Method method : findSubscriptionMethods(listener)) {
 			method.setAccessible(true);
+			Class<?> event = method.getAnnotation(Subscribe.class).value();
 			Class<?>[] parameters = method.getParameterTypes();
-			@SuppressWarnings("unchecked")
-			Class<? extends Event> event = (Class<? extends Event>) parameters[0];
-			subscribers.put(event, Subscriber.create(manager, listener, method));
+			if (NoSubscription.class.equals(event))
+				event = parameters[0];
+			subscribers.put((Class<? extends Event>) event,
+					Subscriber.create(manager, listener, method, parameters));
 		}
 	}
 
@@ -38,17 +41,11 @@ final class SubscriberRegistry {
 		return unmodifiableCollection(subscribers.get(event.getClass()));
 	}
 
-	private static Iterable<Method> findSubscriptionMethods(
-			EventListener listener) {
+	private static Iterable<Method> findSubscriptionMethods(EventListener listener) {
 		Set<Method> methods = new HashSet<>();
-		for (Method method : listener.getClass().getMethods()) {
-			if (!method.isAnnotationPresent(Subscribe.class))
-				continue;
-			Affirm.truth(method.getParameterCount() == 1);
-			Class<?> event = method.getParameterTypes()[0];
-			Affirm.truth(Event.class.isAssignableFrom(event));
-			methods.add(method);
-		}
+		for (Method method : listener.getClass().getDeclaredMethods())
+			if (method.isAnnotationPresent(Subscribe.class))
+				methods.add(method);
 		return methods;
 	}
 
