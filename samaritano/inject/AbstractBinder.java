@@ -8,9 +8,10 @@ import java.util.Set;
 
 import samaritano.inject.binder.ConstantBindingBuilder;
 import samaritano.inject.binder.LinkedBindingBuilder;
+import samaritano.inject.binder.ProviderBindingBuilder;
 
 abstract class AbstractBinder implements Binder {
- 
+
 	private final Map<Key<?>, Binding<?>> bindings = new HashMap<>();
 
 	@Override
@@ -47,6 +48,11 @@ abstract class AbstractBinder implements Binder {
 	@Override
 	public final <T> ConstantBindingBuilder<T> bind(T value) {
 		return ConstantBindingBuilder.get(this, value);
+	}
+
+	@Override
+	public final <T> ProviderBindingBuilder<T> bind(Provider<T> provider) {
+		return ProviderBindingBuilder.get(this, provider);
 	}
 
 	@Override
